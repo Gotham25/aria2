@@ -53,13 +53,18 @@ jobs:
           name: "Running make"
           command: 'make'
       - run:
+          name: "Running make install"
+          command: 'sudo make install'
+      - run:
           name: "Listing directory contents"
           command: 'ls -lah'
       - run:
-          name: "Running make install"
-          command: 'sudo make install'
+          name: "Detecting aria2 installation"
+          command: >-
+            which aria2c &&
+            ./aria2c --help
 workflows:
-  version: 2
+  version: 2.1
   build:
     jobs:
       - non-static-build
