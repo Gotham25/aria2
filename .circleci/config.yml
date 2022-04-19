@@ -56,13 +56,19 @@ jobs:
           name: "Running make install"
           command: 'sudo make install'
       - run:
-          name: "Listing directory contents"
-          command: 'ls -lah'
+          name: "aria2 size before stripping"
+          command: 'ls -lah /usr/local/bin/aria2c'
       - run:
-          name: "Detecting aria2 installation"
+          name: "Copy artifacts to tmp folder"
           command: >-
-            which aria2c &&
-            ./aria2c --help
+          mkdir /tmp/artifacts &&
+          cp /usr/local/bin/aria2c /tmp/artifacts/ &&
+          strip -v /tmp/artifacts/aria2c
+      - run:
+          name: "aria2 size after stripping"
+          command: 'ls -lah /tmp/artifacts/'
+      - store_artifacts:
+          path: /tmp/artifacts/aria2c
 workflows:
   version: 2.1
   build:
