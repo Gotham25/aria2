@@ -61,9 +61,9 @@ jobs:
       - run:
           name: "Copy artifacts to tmp folder"
           command: >-
-          mkdir /tmp/artifacts &&
-          cp /usr/local/bin/aria2c /tmp/artifacts/ &&
-          strip -v /tmp/artifacts/aria2c
+            mkdir /tmp/artifacts &&
+            cp /usr/local/bin/aria2c /tmp/artifacts/ &&
+            strip -v /tmp/artifacts/aria2c
       - run:
           name: "aria2 size after stripping"
           command: 'ls -lah /tmp/artifacts/'
