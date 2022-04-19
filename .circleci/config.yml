@@ -22,8 +22,8 @@ commands:
             $CC --version
 jobs:
   non-static-build:
-    docker:
-      - image: ubuntu-2004:202010-01
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout_and_install_aria2_deps
       - run:
@@ -39,8 +39,8 @@ jobs:
           name: "Running configure"
           command: './configure CPPFLAGS=-fsanitize=address LDFLAGS="-fsanitize=address -fuse-ld=gold"'
   static-build:
-    docker:
-      - image: ubuntu-2004:202010-01
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout_and_install_aria2_deps
       - run:
