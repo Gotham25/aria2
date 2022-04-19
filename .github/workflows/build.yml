@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, macos-10.15]
-        compiler: [gcc, clang]
+        compiler: [gcc]
 
     steps:
     - uses: actions/checkout@v2
@@ -63,19 +63,14 @@ jobs:
     - name: Build aria2
       run: |
         make -j$(nproc) check
-    - name: Exporting binary path
+    - name: Exporting binary path (Linux)
+      if: runner.os == 'Linux'
       run: |
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          echo "ARIA2C_PATH=/usr/bin/aria2c" >> $GITHUB_ENV
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          echo "ARIA2C_PATH=/usr/local/bin/aria2c" >> $GITHUB_ENV
-        else
-          echo "$RUNNER_OS not supported for exporting binary path"
-          exit 1
-        fi
-      shell: bash
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.config.artifact }}
-        path: ${{ env.ARIA2C_PATH }}
+        echo "ARIA2C_PATH=/usr/bin/aria2c" >> $GITHUB_ENV
+    - name: Exporting binary path (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        echo "ARIA2C_PATH=/usr/local/bin/aria2c" >> $GITHUB_ENV
+    - name: Print artifact path
+      run: |
+        echo "ARIA2C_PATH: ${{ env.ARIA2C_PATH }}"
