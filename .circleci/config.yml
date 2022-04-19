@@ -22,3 +22,15 @@ jobs:
           command: >-
             export CC=g++ &&
             $CC --version
+      - run:
+          name: "Running auto re-configuring"
+          command: 'autoreconf -i'
+      - run:
+          name: "Running auto make"
+          command: 'automake'
+      - run:
+          name: "Running auto configuring"
+          command: 'autoconf'
+      - run:
+          name: "Running configure"
+          command: './configure CPPFLAGS=-fsanitize=address LDFLAGS="-fsanitize=address -fuse-ld=gold"'
