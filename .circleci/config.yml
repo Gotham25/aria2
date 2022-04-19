@@ -21,9 +21,26 @@ commands:
             export CC=g++ &&
             $CC --version
 jobs:
-  build:
-    machine:
-      image: ubuntu-2004:202010-01
+  non-static-build:
+    docker:
+      - image: ubuntu-2004:202010-01
+    steps:
+      - checkout_and_install_aria2_deps
+      - run:
+          name: "Running auto re-configuring"
+          command: 'autoreconf -i'
+      - run:
+          name: "Running auto make"
+          command: 'automake'
+      - run:
+          name: "Running auto configuring"
+          command: 'autoconf'
+      - run:
+          name: "Running configure"
+          command: './configure CPPFLAGS=-fsanitize=address LDFLAGS="-fsanitize=address -fuse-ld=gold"'
+  static-build:
+    docker:
+      - image: ubuntu-2004:202010-01
     steps:
       - checkout_and_install_aria2_deps
       - run:
@@ -36,5 +53,14 @@ jobs:
           name: "Running make"
           command: 'make'
       - run:
+          name: "Listing directory contents"
+          command: 'ls -lah'
+      - run:
           name: "Running make install"
-          command: 'make install'
+          command: 'sudo make install'
+workflows:
+  version: 2
+  build:
+    jobs:
+      - non-static-build
+      - static-build
