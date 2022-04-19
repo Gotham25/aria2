@@ -51,15 +51,11 @@ jobs:
     - name: Configure autotools (Linux)
       if: runner.os == 'Linux'
       run: |
-        ./configure \
-          ARIA2_STATIC=yes CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
+        ./configure ARIA2_STATIC=yes --with-ca-bundle='/etc/ssl/certs/ca-certificates.crt'
     - name: Configure autotools (macOS)
       if: runner.os == 'macOS'
       run: |
-        ./configure \
-          --without-openssl --without-gnutls --with-appletls \
-          --disable-nls \
-          ARIA2_STATIC=yes CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
+        ./configure ARIA2_STATIC=yes
     - name: Build aria2
       run: |
         make -j$(nproc) check
