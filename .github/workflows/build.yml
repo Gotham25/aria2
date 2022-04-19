@@ -52,14 +52,14 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         ./configure \
-          CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
+          ARIA2_STATIC=yes CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
     - name: Configure autotools (macOS)
       if: runner.os == 'macOS'
       run: |
         ./configure \
           --without-openssl --without-gnutls --with-appletls \
           --disable-nls \
-          CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
+          ARIA2_STATIC=yes CPPFLAGS="-fsanitize=address" LDFLAGS="-fsanitize=address"
     - name: Build aria2
       run: |
         make -j$(nproc) check
