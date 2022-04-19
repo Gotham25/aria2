@@ -63,3 +63,11 @@ jobs:
     - name: Build aria2
       run: |
         make -j$(nproc) check
+    - name: Checking build in Linux
+      if: runner.os == 'Linux'
+      run: |
+        which aria2c
+    - name: Checking build in MacOS
+      if: runner.os == 'macOS'
+      run: |
+        type -a aria2c
